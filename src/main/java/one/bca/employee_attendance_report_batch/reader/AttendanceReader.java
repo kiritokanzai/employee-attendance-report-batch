@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AttendanceReader {
-    public static String[] tokens = new String[] {"order_id", "first_name", "last_name"
-            , "email", "item_id", "ship_date"};
+    public static String[] tokens = new String[]{ "employee_id", "date", "clock_in", "clock_out", "status_attendance", "overtime_status", "overtime_start", "overtime_end" };
 
     @Autowired
     private AttendanceFieldMapper mapper;

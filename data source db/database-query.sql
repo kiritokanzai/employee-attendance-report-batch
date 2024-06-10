@@ -22,6 +22,7 @@ create table employee_attendance (
 	date date not null,
 	clock_in time not null,
 	clock_out time not null,
+	attendance_status bool not null,
 	overtime_status bool not null,
 	overtime_start time null,
 	overtime_end time null,

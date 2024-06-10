@@ -3,11 +3,12 @@ package one.bca.employee_attendance_report_batch.model;
 import java.sql.Time;
 import java.util.Date;
 
-public class Attendace {
+public class Attendance {
     private String employeeId;
     private Date date;
     private Time clockIn;
     private Time clockOut;
+    private boolean attendanceStatus;
     private boolean overtimeStatus;
     private Time overtimeStart;
     private Time overtimeEnd;
@@ -44,6 +45,14 @@ public class Attendace {
         this.clockOut = clockOut;
     }
 
+    public boolean isAttendanceStatus() {
+        return attendanceStatus;
+    }
+
+    public void setAttendanceStatus(boolean attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
+    }
+
     public boolean isOvertimeStatus() {
         return overtimeStatus;
     }
@@ -75,6 +84,7 @@ public class Attendace {
                 ", date=" + date +
                 ", clockIn=" + clockIn +
                 ", clockOut=" + clockOut +
+                ", attendanceStatus=" + attendanceStatus +
                 ", overtimeStatus=" + overtimeStatus +
                 ", overtimeStart=" + overtimeStart +
                 ", overtimeEnd=" + overtimeEnd +

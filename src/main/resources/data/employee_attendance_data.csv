@@ -1,4 +1,4 @@
-employee_id,date,clock_in,clock_out,status_attendance,overtime_status,overtime_start,overtime_end
+employee_id,date,clock_in,clock_out,attendance_status,overtime_status,overtime_start,overtime_end
 3427,01/07/2024,,,Paid Leave,False,,
 3427,02/07/2024,,,Paid Leave,False,,
 3427,03/07/2024,09:20,21:42,Work,True,19:37,21:42

@@ -15,19 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class EmployeeConfiguration {
+public class EmployeeDataStep {
 
     private final JobRepository jobRepository;
     private final DataSourceTransactionManager transactionManager;
     private final EmployeeReader reader;
 
-    public EmployeeConfiguration(JobRepository jobRepository, DataSourceTransactionManager transactionManager, EmployeeReader reader) {
+    public EmployeeDataStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager, EmployeeReader reader) {
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
         this.reader = reader;
     }
 
-    public Step employeeDataStep() {
+    public Step getStep() {
         return new StepBuilder("employeeDataStep", jobRepository)
                 .<Employee, Employee>chunk(50, transactionManager)
                 .reader(reader.itemReader())

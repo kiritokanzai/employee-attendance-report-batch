@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmployeeReader {
     private final DataSourceTransactionManager transactionManager;
-
     private final EmployeeRowMapper employeeRowMapper;
 
     public EmployeeReader(DataSourceTransactionManager transactionManager, EmployeeRowMapper employeeRowMapper) {
@@ -18,7 +17,7 @@ public class EmployeeReader {
         this.employeeRowMapper = employeeRowMapper;
     }
 
-    public static String GET_SQL = "select "
+    private static final String GET_SQL = "select "
             + "employee_id, first_name, last_name, gender, email, category, paid_leave_limit, used_paid_leave "
             + "from EMPLOYEES order by employee_id";
 

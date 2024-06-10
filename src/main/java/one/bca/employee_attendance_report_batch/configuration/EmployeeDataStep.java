@@ -16,7 +16,6 @@ import java.util.List;
 
 @Configuration
 public class EmployeeDataStep {
-
     private final JobRepository jobRepository;
     private final DataSourceTransactionManager transactionManager;
     private final EmployeeReader reader;

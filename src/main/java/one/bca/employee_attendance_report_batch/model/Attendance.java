@@ -1,5 +1,7 @@
 package one.bca.employee_attendance_report_batch.model;
 
+import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -8,7 +10,7 @@ public class Attendance {
     private Date date;
     private Time clockIn;
     private Time clockOut;
-    private boolean attendanceStatus;
+    private AttendanceStatusEnum attendanceStatus;
     private boolean overtimeStatus;
     private Time overtimeStart;
     private Time overtimeEnd;
@@ -45,11 +47,11 @@ public class Attendance {
         this.clockOut = clockOut;
     }
 
-    public boolean isAttendanceStatus() {
+    public AttendanceStatusEnum getAttendanceStatus() {
         return attendanceStatus;
     }
 
-    public void setAttendanceStatus(boolean attendanceStatus) {
+    public void setAttendanceStatus(AttendanceStatusEnum attendanceStatus) {
         this.attendanceStatus = attendanceStatus;
     }
 

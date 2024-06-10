@@ -1,5 +1,6 @@
 package one.bca.employee_attendance_report_batch.mapper;
 
+import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
 import one.bca.employee_attendance_report_batch.model.Attendance;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
@@ -15,6 +16,7 @@ public class AttendanceFieldMapper implements FieldSetMapper<Attendance> {
         attendance.setDate(fieldSet.readDate("date"));
         attendance.setClockIn(Time.valueOf(fieldSet.readString("clock_in")));
         attendance.setClockOut(Time.valueOf(fieldSet.readString("clock_out")));
+        attendance.setAttendanceStatus(Enum.valueOf(AttendanceStatusEnum.class, fieldSet.readString("attendance_status")));
         attendance.setOvertimeStatus(fieldSet.readBoolean("overtime_status"));
         attendance.setOvertimeStart(Time.valueOf(fieldSet.readString("overtime_start")));
         attendance.setOvertimeEnd(Time.valueOf(fieldSet.readString("overtime_end")));

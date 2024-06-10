@@ -7,15 +7,15 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 
 import javax.sql.DataSource;
 
-public class AttendanceDataWriter {
-    public static String INSERT_ORDER_SQL = "insert into " +
+public class AttendanceDataJdbcWriter {
+    private static final String INSERT_ATTENDANCE_SQL = "insert into " +
             "EMPLOYEE_ATTENDANCE(employee_id, date, clock_in, clock_out, attendance_status, overtime_status, overtime_start, overtime_end) " +
             "values(?,?,?,?,?,?,?,?)";
 
     public ItemWriter<Attendance> itemWriter(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<Attendance>()
                 .dataSource(dataSource)
-                .sql(INSERT_ORDER_SQL)
+                .sql(INSERT_ATTENDANCE_SQL)
                 .itemPreparedStatementSetter(new AttendanceItemPreparedStatementSetter())
                 .build();
     }

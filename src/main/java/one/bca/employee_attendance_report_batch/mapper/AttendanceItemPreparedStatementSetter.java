@@ -14,7 +14,7 @@ public class AttendanceItemPreparedStatementSetter implements ItemPreparedStatem
         ps.setDate(2, new Date(item.getDate().getTime()));
         ps.setTime(3, item.getClockIn());
         ps.setTime(4, item.getClockOut());
-        ps.setBoolean(5, item.isAttendanceStatus());
+        ps.setString(5, item.getAttendanceStatus().toString());
         ps.setBoolean(6, item.isOvertimeStatus());
         ps.setTime(7, item.getOvertimeStart());
         ps.setTime(8, item.getOvertimeEnd());

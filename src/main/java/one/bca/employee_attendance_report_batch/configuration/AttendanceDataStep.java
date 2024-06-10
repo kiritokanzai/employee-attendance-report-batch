@@ -2,7 +2,7 @@ package one.bca.employee_attendance_report_batch.configuration;
 
 import one.bca.employee_attendance_report_batch.model.Attendance;
 import one.bca.employee_attendance_report_batch.reader.AttendanceReader;
-import one.bca.employee_attendance_report_batch.writer.AttendanceDataWriter;
+import one.bca.employee_attendance_report_batch.writer.AttendanceDataJdbcWriter;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -32,7 +32,7 @@ public class AttendanceDataStep {
                         return item;
                     }
                 })
-                .writer(new AttendanceDataWriter().itemWriter(transactionManager.getDataSource()))
+                .writer(new AttendanceDataJdbcWriter().itemWriter(transactionManager.getDataSource()))
                 .build();
     }
 }

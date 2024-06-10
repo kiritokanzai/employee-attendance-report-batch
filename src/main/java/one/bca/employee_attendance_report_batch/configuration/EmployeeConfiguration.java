@@ -27,10 +27,10 @@ public class EmployeeConfiguration {
         this.reader = reader;
     }
 
-    public Step getEmployeeDataStep() {
-        return new StepBuilder("getEmployeeDataStep", jobRepository)
+    public Step employeeDataStep() {
+        return new StepBuilder("employeeDataStep", jobRepository)
                 .<Employee, Employee>chunk(50, transactionManager)
-                .reader(reader.employeeReader())
+                .reader(reader.itemReader())
                 .processor(new ItemProcessor<Employee, Employee>() {
                     @Override
                     public Employee process(Employee item) throws Exception {

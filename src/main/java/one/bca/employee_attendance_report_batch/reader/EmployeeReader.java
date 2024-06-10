@@ -4,7 +4,6 @@ import one.bca.employee_attendance_report_batch.mapper.EmployeeRowMapper;
 import one.bca.employee_attendance_report_batch.model.Employee;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,7 @@ public class EmployeeReader {
             + "employee_id, first_name, last_name, gender, email, category, paid_leave_limit, used_paid_leave "
             + "from EMPLOYEES order by employee_id";
 
-    public ItemReader<Employee> employeeReader() {
+    public ItemReader<Employee> itemReader() {
         return new JdbcCursorItemReaderBuilder<Employee>()
                 .dataSource(transactionManager.getDataSource())
                 .name("jdbcCursorEmployeeReader")

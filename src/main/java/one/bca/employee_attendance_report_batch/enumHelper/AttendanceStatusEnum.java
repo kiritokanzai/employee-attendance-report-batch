@@ -1,4 +1,4 @@
-package one.bca.employee_attendance_report_batch.enum_helper;
+package one.bca.employee_attendance_report_batch.enumHelper;
 
 public enum AttendanceStatusEnum {
     WORK,

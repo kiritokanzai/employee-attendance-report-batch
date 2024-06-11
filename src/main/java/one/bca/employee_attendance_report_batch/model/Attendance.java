@@ -1,6 +1,6 @@
 package one.bca.employee_attendance_report_batch.model;
 
-import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
+import one.bca.employee_attendance_report_batch.enumHelper.AttendanceStatusEnum;
 
 import java.sql.Time;
 import java.util.Date;

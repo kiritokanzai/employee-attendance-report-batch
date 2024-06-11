@@ -26,12 +26,6 @@ public class AttendanceDataStep {
         return new StepBuilder("attendanceDataStep", jobRepository)
                 .<Attendance, Attendance>chunk(50, transactionManager)
                 .reader(reader.itemReader())
-                .processor(new ItemProcessor<Attendance, Attendance>() {
-                    @Override
-                    public Attendance process(Attendance item) throws Exception {
-                        return item;
-                    }
-                })
                 .writer(new AttendanceDataJdbcWriter().itemWriter(transactionManager.getDataSource()))
                 .build();
     }

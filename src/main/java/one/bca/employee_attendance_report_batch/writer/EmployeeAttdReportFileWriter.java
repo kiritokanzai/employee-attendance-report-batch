@@ -1,13 +1,20 @@
 package one.bca.employee_attendance_report_batch.writer;
 
-import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReport;
+import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceDataDto;
+import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
+import one.bca.employee_attendance_report_batch.model.Attendance;
+import one.bca.employee_attendance_report_batch.model.EmployeeAttendance;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.core.io.FileSystemResource;
 
-public class EmployeeAttdReportFileWriter {
+import java.util.ArrayList;
+import java.util.List;
+
+public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendance> {
     private static String[] names = new String[] {
             "employee_id",
             "first_name",
@@ -22,20 +29,46 @@ public class EmployeeAttdReportFileWriter {
             "paid_leave_limit_remaining"
     };
 
-    public ItemWriter<EmployeeAttendanceReport> itemWriter() {
-        FlatFileItemWriter<EmployeeAttendanceReport> itemWriter = new FlatFileItemWriter<>();
+//    private void createReportFile() {
+//        FlatFileItemWriter<EmployeeAttendanceReportDto> itemWriter = new FlatFileItemWriter<>();
+//
+//        itemWriter.setResource(new FileSystemResource("data/employee_attendance_monthly_report.csv"));
+//
+//        DelimitedLineAggregator<EmployeeAttendanceReportDto> aggregator = new DelimitedLineAggregator<>();
+//        aggregator.setDelimiter(",");
+//
+//        BeanWrapperFieldExtractor<EmployeeAttendanceReportDto> fieldExtractor = new BeanWrapperFieldExtractor<>();
+//        fieldExtractor.setNames(names);
+//        aggregator.setFieldExtractor(fieldExtractor);
+//
+//        itemWriter.setHeaderCallback(writer -> writer.write(String.join(",", names)));
+//        itemWriter.setLineAggregator(aggregator);
+//    }
 
-        itemWriter.setResource(new FileSystemResource("data/employee_attendance_monthly_report.csv"));
+    @Override
+    public void write(Chunk<? extends EmployeeAttendance> chunk) throws Exception {
+        List<EmployeeAttendanceDataDto> employeeAttendanceDataDtoList = new ArrayList<>();
+        List<EmployeeAttendance> items = (List<EmployeeAttendance>) chunk.getItems();
 
-        DelimitedLineAggregator<EmployeeAttendanceReport> aggregator = new DelimitedLineAggregator<>();
-        aggregator.setDelimiter(",");
+        // map to list of EmployeeAttendanceDataDto
+        items.forEach (x -> {
+            if (employeeAttendanceDataDtoList.isEmpty()) {
+                List<Attendance> attendanceList = new ArrayList<>();
+                attendanceList.add(x.getAttendance());
 
-        BeanWrapperFieldExtractor<EmployeeAttendanceReport> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(names);
-        aggregator.setFieldExtractor(fieldExtractor);
+                employeeAttendanceDataDtoList.add(new EmployeeAttendanceDataDto(x.getEmployee(), attendanceList));
+            } else if (employeeAttendanceDataDtoList.getLast().getEmployee().getEmployeeId() == x.getEmployee().getEmployeeId()) {
+                EmployeeAttendanceDataDto last = employeeAttendanceDataDtoList.getLast();
+                last.getAttendanceList().add(x.getAttendance());
+            } else {
+                List<Attendance> attendanceList = new ArrayList<>();
+                attendanceList.add(x.getAttendance());
 
-        itemWriter.setHeaderCallback(writer -> writer.write(String.join(",", names)));
-        itemWriter.setLineAggregator(aggregator);
-        return itemWriter;
+                employeeAttendanceDataDtoList.add(new EmployeeAttendanceDataDto(x.getEmployee(), attendanceList));
+            }
+        });
+
+        // create report
+
     }
 }

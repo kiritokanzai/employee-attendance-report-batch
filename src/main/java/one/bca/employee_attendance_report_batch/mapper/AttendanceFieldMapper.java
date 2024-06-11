@@ -1,6 +1,6 @@
 package one.bca.employee_attendance_report_batch.mapper;
 
-import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
+import one.bca.employee_attendance_report_batch.enumHelper.AttendanceStatusEnum;
 import one.bca.employee_attendance_report_batch.model.Attendance;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;

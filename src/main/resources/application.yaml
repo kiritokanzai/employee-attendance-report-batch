@@ -6,3 +6,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/db_employee
     username: postgres
     password: postgres
+  batch:
+    jdbc:
+      initialize-schema: always

@@ -14,10 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AttendanceReader {
-    public static String[] tokens = new String[]{ "employee_id", "date", "clock_in", "clock_out", "attendance_status", "overtime_status", "overtime_start", "overtime_end" };
-
-    @Autowired
-    private AttendanceFieldMapper mapper;
+    public static String[] tokens = new String[]{
+            "employee_id", "date", "clock_in", "clock_out", "attendance_status", "overtime_status", "overtime_start", "overtime_end" };
 
     @Value("classpath:data/employee_attendance_data.csv")
     private Resource resource;
@@ -30,14 +28,13 @@ public class AttendanceReader {
 
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
         tokenizer.setNames(tokens);
-        tokenizer.setDelimiter(";");
+        tokenizer.setDelimiter(",");
 
         DefaultLineMapper<Attendance> lineMapper = new DefaultLineMapper<Attendance>();
         lineMapper.setLineTokenizer(tokenizer);
-        lineMapper.setFieldSetMapper(mapper);
+        lineMapper.setFieldSetMapper(new AttendanceFieldMapper());
 
         itemReader.setLineMapper(lineMapper);
         return itemReader;
-
     }
 }

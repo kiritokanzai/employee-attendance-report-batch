@@ -13,6 +13,7 @@ import org.springframework.core.io.FileSystemResource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendance> {
     private static String[] names = new String[] {
@@ -28,6 +29,8 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
             "total_paid_leave_days",
             "paid_leave_limit_remaining"
     };
+
+    private Logger logger = Logger.getLogger(getClass().getName());
 
 //    private void createReportFile() {
 //        FlatFileItemWriter<EmployeeAttendanceReportDto> itemWriter = new FlatFileItemWriter<>();
@@ -49,7 +52,6 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
     public void write(Chunk<? extends EmployeeAttendance> chunk) throws Exception {
         List<EmployeeAttendanceDataDto> employeeAttendanceDataDtoList = new ArrayList<>();
         List<EmployeeAttendance> items = (List<EmployeeAttendance>) chunk.getItems();
-
         // map to list of EmployeeAttendanceDataDto
         items.forEach (x -> {
             if (employeeAttendanceDataDtoList.isEmpty()) {
@@ -57,7 +59,8 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
                 attendanceList.add(x.getAttendance());
 
                 employeeAttendanceDataDtoList.add(new EmployeeAttendanceDataDto(x.getEmployee(), attendanceList));
-            } else if (employeeAttendanceDataDtoList.getLast().getEmployee().getEmployeeId() == x.getEmployee().getEmployeeId()) {
+            }
+            /*else if (employeeAttendanceDataDtoList.getLast().getEmployee().getEmployeeId().equalsIgnoreCase(x.getEmployee().getEmployeeId())) {
                 EmployeeAttendanceDataDto last = employeeAttendanceDataDtoList.getLast();
                 last.getAttendanceList().add(x.getAttendance());
             } else {
@@ -65,7 +68,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
                 attendanceList.add(x.getAttendance());
 
                 employeeAttendanceDataDtoList.add(new EmployeeAttendanceDataDto(x.getEmployee(), attendanceList));
-            }
+            }*/
         });
 
         // create report

@@ -3,6 +3,7 @@ package one.bca.employee_attendance_report_batch.configuration;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -17,10 +18,11 @@ public class JobConfiguration {
         this.employeeAttdReportStep = employeeAttdReportStep;
     }
 
-    public Job job() throws Exception {
+    @Bean
+    public Job job() {
         return new JobBuilder("employeeAttendanceReportJob", jobRepository)
                 .start(attendanceDataStep.getStep())
-                .next(employeeAttdReportStep.getStep())
+//                .next(employeeAttdReportStep.getStep())
                 .build();
     }
 }

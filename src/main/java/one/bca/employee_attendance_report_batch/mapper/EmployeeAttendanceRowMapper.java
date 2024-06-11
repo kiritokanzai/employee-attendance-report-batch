@@ -8,10 +8,16 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class EmployeeAttendanceRowMapper implements RowMapper<EmployeeAttendance> {
     @Override
     public EmployeeAttendance mapRow(ResultSet rs, int rowNum) throws SQLException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Employee employee = new Employee();
         employee.setEmployeeId(rs.getString("employee_id"));
         employee.setFirstName(rs.getString("first_name"));
@@ -24,7 +30,11 @@ public class EmployeeAttendanceRowMapper implements RowMapper<EmployeeAttendance
 
         Attendance attendance = new Attendance();
         attendance.setEmployeeId(rs.getString("employee_id"));
-        attendance.setDate(rs.getDate("date"));
+        /*try {
+            attendance.setDate(dateFormat.parse(rs.getDate("date").toString()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }*/
         attendance.setClockIn(rs.getTime("clock_in"));
         attendance.setClockOut(rs.getTime("clock_out"));
         attendance.setAttendanceStatus(Enum.valueOf(AttendanceStatusEnum.class, rs.getString("attendance_status")));

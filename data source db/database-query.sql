@@ -1,3 +1,35 @@
+--drop table employee_data
+--select count(*) from employee_data ed
+
+create table employee_data (
+	employee_id varchar(10) primary key,
+	first_name varchar(50) null,
+	last_name varchar(50) null,
+	gender varchar(10) null,
+	email varchar(50) null,
+	category varchar(10) null,
+	division varchar(50) null,
+	paid_leave_limit int not null,
+	last_used_paid_leave int not null,
+	current_used_paid_leave int not null
+);
+
+--drop table employee_attendance
+--select count(*) from employee_attendance ea
+create table employee_attendance (
+	attendance_id uuid DEFAULT gen_random_uuid() primary key,
+	employee_id varchar(10) not null,
+	date date not null,
+	clock_in time null,
+	clock_out time null,
+	attendance_status varchar(10) not null,
+	overtime_status bool not null,
+	overtime_start time null,
+	overtime_end time null,
+
+	foreign key (employee_id) references employee_data(employee_id) on delete cascade on update cascade
+);
+
 INSERT INTO public.employee_data (employee_id,first_name,last_name,gender,email,category,division,paid_leave_limit,last_used_paid_leave,current_used_paid_leave) VALUES
 	 ('3427','Uriah','Bridges','Female','uriah.bridges@bilearner.com','Contract','Finance & Accounting',12,3,2),
 	 ('3428','Paula','Small','Male','paula.small@bilearner.com','Contract','Aerial',12,8,0),

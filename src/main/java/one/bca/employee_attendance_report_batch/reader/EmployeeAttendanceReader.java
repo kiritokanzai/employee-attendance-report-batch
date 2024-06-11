@@ -10,11 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmployeeAttendanceReader {
     private final DataSourceTransactionManager transactionManager;
-    private final EmployeeAttendanceRowMapper employeeAttendanceRowMapper;
 
-    public EmployeeAttendanceReader(DataSourceTransactionManager transactionManager, EmployeeAttendanceRowMapper employeeAttendanceRowMapper) {
+    public EmployeeAttendanceReader(DataSourceTransactionManager transactionManager) {
         this.transactionManager = transactionManager;
-        this.employeeAttendanceRowMapper = employeeAttendanceRowMapper;
     }
 
     private static final String GET_SQL = "select " +
@@ -28,7 +26,7 @@ public class EmployeeAttendanceReader {
                 .dataSource(transactionManager.getDataSource())
                 .name("jdbcCursorEmployeeReader")
                 .sql(GET_SQL)
-                .rowMapper(employeeAttendanceRowMapper)
+                .rowMapper(new EmployeeAttendanceRowMapper())
                 .build();
     }
 }

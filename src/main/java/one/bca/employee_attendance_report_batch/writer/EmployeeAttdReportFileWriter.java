@@ -1,21 +1,10 @@
 package one.bca.employee_attendance_report_batch.writer;
 
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceDataDto;
-import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
-import one.bca.employee_attendance_report_batch.model.Attendance;
-import one.bca.employee_attendance_report_batch.model.EmployeeAttendance;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
-import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
-import org.springframework.core.io.FileSystemResource;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendance> {
+public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendanceDataDto> {
     private static String[] names = new String[] {
             "employee_id",
             "first_name",
@@ -29,8 +18,6 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
             "total_paid_leave_days",
             "paid_leave_limit_remaining"
     };
-
-    private Logger logger = Logger.getLogger(getClass().getName());
 
 //    private void createReportFile() {
 //        FlatFileItemWriter<EmployeeAttendanceReportDto> itemWriter = new FlatFileItemWriter<>();
@@ -49,29 +36,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
 //    }
 
     @Override
-    public void write(Chunk<? extends EmployeeAttendance> chunk) throws Exception {
-        List<EmployeeAttendanceDataDto> employeeAttendanceDataDtoList = new ArrayList<>();
-        List<EmployeeAttendance> items = (List<EmployeeAttendance>) chunk.getItems();
-        // map to list of EmployeeAttendanceDataDto
-        items.forEach (x -> {
-            if (employeeAttendanceDataDtoList.isEmpty()) {
-                List<Attendance> attendanceList = new ArrayList<>();
-                attendanceList.add(x.getAttendance());
-
-                employeeAttendanceDataDtoList.add(new EmployeeAttendanceDataDto(x.getEmployee(), attendanceList));
-            }
-            /*else if (employeeAttendanceDataDtoList.getLast().getEmployee().getEmployeeId().equalsIgnoreCase(x.getEmployee().getEmployeeId())) {
-                EmployeeAttendanceDataDto last = employeeAttendanceDataDtoList.getLast();
-                last.getAttendanceList().add(x.getAttendance());
-            } else {
-                List<Attendance> attendanceList = new ArrayList<>();
-                attendanceList.add(x.getAttendance());
-
-                employeeAttendanceDataDtoList.add(new EmployeeAttendanceDataDto(x.getEmployee(), attendanceList));
-            }*/
-        });
-
-        // create report
+    public void write(Chunk<? extends EmployeeAttendanceDataDto> chunk) throws Exception {
 
     }
 }

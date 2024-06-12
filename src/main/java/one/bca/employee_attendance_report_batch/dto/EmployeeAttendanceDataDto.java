@@ -29,4 +29,12 @@ public class EmployeeAttendanceDataDto {
     public void setAttendanceList(List<Attendance> attendanceList) {
         this.attendanceList = attendanceList;
     }
+
+    @Override
+    public String toString() {
+        return "EmployeeAttendanceDataDto{" +
+                "employee=" + employee +
+                ", attendanceList=" + attendanceList +
+                '}';
+    }
 }

@@ -1,3 +1,6 @@
+--drop database db_employee
+--create database db_employee;
+
 --drop table employee_data
 --select count(*) from employee_data ed
 
@@ -16,6 +19,7 @@ create table employee_data (
 
 --drop table employee_attendance
 --select count(*) from employee_attendance ea
+--truncate employee_attendance
 create table employee_attendance (
 	attendance_id uuid DEFAULT gen_random_uuid() primary key,
 	employee_id varchar(10) not null,
@@ -27,6 +31,7 @@ create table employee_attendance (
 	overtime_start time null,
 	overtime_end time null,
 
+	unique(employee_id, date),
 	foreign key (employee_id) references employee_data(employee_id) on delete cascade on update cascade
 );
 

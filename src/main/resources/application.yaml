@@ -9,3 +9,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+
+app:
+  attendanceClockIn: '08:30:00'
+  attendanceClockOut: '17:30:00'
+  startOvertimeHour: '19:30:00'

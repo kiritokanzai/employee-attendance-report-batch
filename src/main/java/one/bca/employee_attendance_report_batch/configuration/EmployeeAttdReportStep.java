@@ -17,12 +17,14 @@ public class EmployeeAttdReportStep {
     private final DataSourceTransactionManager transactionManager;
     private final EmployeeReader reader;
     private final EmployeeAttendanceProcessor processor;
+    private final EmployeeAttdReportFileWriter writer;
 
-    public EmployeeAttdReportStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager, EmployeeReader reader, EmployeeAttendanceProcessor processor) {
+    public EmployeeAttdReportStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager, EmployeeReader reader, EmployeeAttendanceProcessor processor, EmployeeAttdReportFileWriter writer) {
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
         this.reader = reader;
         this.processor = processor;
+        this.writer = writer;
     }
 
     public Step getStep() {
@@ -30,7 +32,7 @@ public class EmployeeAttdReportStep {
                 .<Employee, EmployeeAttendanceDataDto>chunk(50, transactionManager)
                 .reader(reader.itemReader())
                 .processor(processor)
-                .writer(new EmployeeAttdReportFileWriter())
+                .writer(writer)
                 .build();
     }
 }

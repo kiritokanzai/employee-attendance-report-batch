@@ -13,6 +13,20 @@ public class EmployeeAttendanceReportDto {
     private Integer total_paid_leave_days;
     private Integer paid_leave_limit_remaining;
 
+    public EmployeeAttendanceReportDto(String employeeId, String firstName, String lastName, String email, String category, String division, Integer total_attend_days, Integer total_late_days, Integer total_overtime_hours, Integer total_paid_leave_days, Integer paid_leave_limit_remaining) {
+        this.employeeId = employeeId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.category = category;
+        this.division = division;
+        this.total_attend_days = total_attend_days;
+        this.total_late_days = total_late_days;
+        this.total_overtime_hours = total_overtime_hours;
+        this.total_paid_leave_days = total_paid_leave_days;
+        this.paid_leave_limit_remaining = paid_leave_limit_remaining;
+    }
+
     public String getEmployeeId() {
         return employeeId;
     }

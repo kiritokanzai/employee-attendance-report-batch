@@ -3,6 +3,7 @@
 
 --drop table employee_data
 --select count(*) from employee_data ed
+--select * from employee_data ed 
 
 create table employee_data (
 	employee_id varchar(10) primary key,

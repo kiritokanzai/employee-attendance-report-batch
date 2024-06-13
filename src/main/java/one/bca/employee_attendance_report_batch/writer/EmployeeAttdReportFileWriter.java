@@ -37,6 +37,11 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
 
     @Override
     public void write(Chunk<? extends EmployeeAttendanceDataDto> chunk) throws Exception {
-
+        /*
+            Step:
+            1. calculate
+            2. write report to csv (format: EmployeeAttendanceReportDto)
+            3. update past and current leave in employee table
+         */
     }
 }

@@ -1,7 +1,7 @@
 package one.bca.employee_attendance_report_batch.writer;
 
 import com.opencsv.CSVWriter;
-import one.bca.employee_attendance_report_batch.AppConfigurationProperties;
+import lombok.extern.slf4j.Slf4j;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
@@ -17,16 +17,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Configuration
+@Slf4j
 public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendanceReportDto> {
     private final JdbcTemplate jdbcTemplate;
-    private final AppConfigurationProperties configuration;
 
-    public EmployeeAttdReportFileWriter(JdbcTemplate jdbcTemplate, AppConfigurationProperties configuration) {
+    public EmployeeAttdReportFileWriter(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.configuration = configuration;
     }
-
-    Logger logger = Logger.getLogger(getClass().getName());
 
     private static String[] names = new String[]{
             "employee_id",
@@ -48,7 +45,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
         writeReportCsv(chunk);
     }
 
-    private void writeReportCsv(Chunk<? extends EmployeeAttendanceReportDto> data) throws IOException {
+    private synchronized void writeReportCsv(Chunk<? extends EmployeeAttendanceReportDto> data) throws IOException {
         File file = new FileSystemResource("employee_attendance_monthly_report.csv").getFile();
         boolean isNewFile = file.createNewFile();
         try {
@@ -68,9 +65,9 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
 
             writer.close();
 
-            logger.info("Successfully writing report csv");
+            log.info("Successfully writing report csv");
         } catch (IOException e) {
-            logger.info("Failed writing report csv");
+            log.info("Failed writing report csv");
             throw new IOException(e);
         }
     }
@@ -88,9 +85,9 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
             });
 
 
-            logger.info("Successfully updating data to database");
+            log.info("Successfully updating data to database");
         } catch (Exception e) {
-            logger.info("Failed updating data to database");
+            log.info("Failed updating data to database");
             throw new Exception(e);
         }
 

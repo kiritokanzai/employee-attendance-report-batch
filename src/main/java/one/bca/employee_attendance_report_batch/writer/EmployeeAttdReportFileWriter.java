@@ -3,6 +3,7 @@ package one.bca.employee_attendance_report_batch.writer;
 import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import one.bca.employee_attendance_report_batch.configuration_properties.AppConfigurationProperties;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
 import org.apache.coyote.BadRequestException;
 import org.springframework.batch.item.Chunk;
@@ -22,6 +23,7 @@ import java.util.List;
 @Slf4j
 public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendanceReportDto> {
     private final JdbcTemplate jdbcTemplate;
+    private final AppConfigurationProperties configuration;
 
     private static String[] names = new String[]{
             "employee_id",
@@ -44,7 +46,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
     }
 
     private synchronized void writeReportCsv(Chunk<? extends EmployeeAttendanceReportDto> data) throws IOException {
-        File file = new FileSystemResource("report/employee_attendance_monthly_report.csv").getFile();
+        File file = new FileSystemResource(configuration.getReportFilePath()).getFile();
         boolean isNewFile = file.createNewFile();
         try {
             FileWriter outputfile = new FileWriter(file, true);

@@ -3,7 +3,6 @@ package one.bca.employee_attendance_report_batch.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +19,6 @@ public class JobConfiguration {
         return new JobBuilder("employeeAttendanceReportJob", jobRepository)
                 .start(attendanceDataStep.getStep())
                 .next(employeeAttdReportStep.getStep())
-                .incrementer(new RunIdIncrementer())
                 .build();
     }
 }

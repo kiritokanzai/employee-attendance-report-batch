@@ -2,7 +2,7 @@ package one.bca.employee_attendance_report_batch.processor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import one.bca.employee_attendance_report_batch.AppConfigurationProperties;
+import one.bca.employee_attendance_report_batch.configuration_properties.AppConfigurationProperties;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
 import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
 import one.bca.employee_attendance_report_batch.mapper.AttendanceRowMapper;
@@ -38,19 +38,19 @@ public class EmployeeAttendanceProcessor implements ItemProcessor<Employee, Empl
 
         int totalAttendDays = (int) attendanceList
                 .stream()
-                .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockIn().before(configuration.getAttendanceClockIn()) && x.getClockOut().after(configuration.getAttendanceClockOut()))
+                .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockIn().before(configuration.getRule().getAttendanceClockIn()) && x.getClockOut().after(configuration.getRule().getAttendanceClockOut()))
                 .count();
 
         int totalLateDays = (int) attendanceList
                 .stream()
-                .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockIn().after(configuration.getAttendanceClockIn()))
+                .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockIn().after(configuration.getRule().getAttendanceClockIn()))
                 .count();
 
         AtomicInteger totalOvertimeHours = new AtomicInteger();
 
         attendanceList
                 .stream()
-                .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockOut().after(configuration.getStartOvertimeHour()))
+                .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockOut().after(configuration.getRule().getStartOvertimeHour()))
                 .forEach(x ->
                         totalOvertimeHours.addAndGet((int) Duration.between(x.getClockOut().toLocalTime(), Time.valueOf("23:59:59").toLocalTime()).toHours())
                 );

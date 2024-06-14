@@ -16,7 +16,7 @@ public class EmployeeReader {
     }
 
     private static final String GET_SQL = "select " +
-            "e.employee_id, e.first_name, e.last_name, e.gender, e.email, e.category, e.paid_leave_limit, e.last_used_paid_leave, e.current_used_paid_leave " +
+            "e.employee_id, e.first_name, e.last_name, e.gender, e.email, e.category, e.paid_leave_limit, e.used_paid_leave " +
             "from EMPLOYEE_DATA e " +
             "order by e.employee_id";
 

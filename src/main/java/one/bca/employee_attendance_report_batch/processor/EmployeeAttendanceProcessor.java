@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import one.bca.employee_attendance_report_batch.AppConfigurationProperties;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
-import one.bca.employee_attendance_report_batch.enumHelper.AttendanceStatusEnum;
+import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
 import one.bca.employee_attendance_report_batch.mapper.AttendanceRowMapper;
 import one.bca.employee_attendance_report_batch.model.Attendance;
 import one.bca.employee_attendance_report_batch.model.Employee;

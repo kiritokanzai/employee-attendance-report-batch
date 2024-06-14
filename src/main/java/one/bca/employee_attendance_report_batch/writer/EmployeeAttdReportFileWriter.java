@@ -1,8 +1,10 @@
 package one.bca.employee_attendance_report_batch.writer;
 
 import com.opencsv.CSVWriter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
+import org.apache.coyote.BadRequestException;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +16,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Configuration
+@RequiredArgsConstructor
 @Slf4j
 public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendanceReportDto> {
     private final JdbcTemplate jdbcTemplate;
-
-    public EmployeeAttdReportFileWriter(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     private static String[] names = new String[]{
             "employee_id",
@@ -84,12 +82,10 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
                 );
             });
 
-
             log.info("Successfully updating data to database");
         } catch (Exception e) {
             log.info("Failed updating data to database");
-            throw new Exception(e);
+            throw new BadRequestException(e);
         }
-
     }
 }

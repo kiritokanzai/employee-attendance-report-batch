@@ -4,7 +4,7 @@
 --drop table employee_data
 --select count(*) from employee_data ed
 --select * from employee_data ed 
-
+--update employee_data set used_paid_leave = 0
 create table employee_data (
 	employee_id varchar(10) primary key,
 	first_name varchar(50) null,

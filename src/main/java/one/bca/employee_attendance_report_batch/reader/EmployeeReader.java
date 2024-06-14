@@ -1,5 +1,6 @@
 package one.bca.employee_attendance_report_batch.reader;
 
+import lombok.RequiredArgsConstructor;
 import one.bca.employee_attendance_report_batch.mapper.EmployeeRowMapper;
 import one.bca.employee_attendance_report_batch.model.Employee;
 import org.springframework.batch.item.ItemReader;
@@ -10,12 +11,9 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class EmployeeReader {
     private final DataSourceTransactionManager transactionManager;
-
-    public EmployeeReader(DataSourceTransactionManager transactionManager) {
-        this.transactionManager = transactionManager;
-    }
 
     @Bean
     public ItemReader<Employee> itemReader() {

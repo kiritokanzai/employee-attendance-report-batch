@@ -1,10 +1,12 @@
 package one.bca.employee_attendance_report_batch.model;
 
-import one.bca.employee_attendance_report_batch.enumHelper.AttendanceStatusEnum;
+import lombok.Data;
+import one.bca.employee_attendance_report_batch.enum_helper.AttendanceStatusEnum;
 
 import java.sql.Time;
 import java.util.Date;
 
+@Data
 public class Attendance {
     private String employeeId;
     private Date date;
@@ -14,82 +16,4 @@ public class Attendance {
     private boolean overtimeStatus;
     private Time overtimeStart;
     private Time overtimeEnd;
-
-    public String getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Time getClockIn() {
-        return clockIn;
-    }
-
-    public void setClockIn(Time clockIn) {
-        this.clockIn = clockIn;
-    }
-
-    public Time getClockOut() {
-        return clockOut;
-    }
-
-    public void setClockOut(Time clockOut) {
-        this.clockOut = clockOut;
-    }
-
-    public AttendanceStatusEnum getAttendanceStatus() {
-        return attendanceStatus;
-    }
-
-    public void setAttendanceStatus(AttendanceStatusEnum attendanceStatus) {
-        this.attendanceStatus = attendanceStatus;
-    }
-
-    public boolean isOvertimeStatus() {
-        return overtimeStatus;
-    }
-
-    public void setOvertimeStatus(boolean overtimeStatus) {
-        this.overtimeStatus = overtimeStatus;
-    }
-
-    public Time getOvertimeStart() {
-        return overtimeStart;
-    }
-
-    public void setOvertimeStart(Time overtimeStart) {
-        this.overtimeStart = overtimeStart;
-    }
-
-    public Time getOvertimeEnd() {
-        return overtimeEnd;
-    }
-
-    public void setOvertimeEnd(Time overtimeEnd) {
-        this.overtimeEnd = overtimeEnd;
-    }
-
-    @Override
-    public String toString() {
-        return "Attendace[" +
-                "employeeId=" + employeeId +
-                ", date=" + date +
-                ", clockIn=" + clockIn +
-                ", clockOut=" + clockOut +
-                ", attendanceStatus=" + attendanceStatus +
-                ", overtimeStatus=" + overtimeStatus +
-                ", overtimeStart=" + overtimeStart +
-                ", overtimeEnd=" + overtimeEnd +
-                ']';
-    }
 }

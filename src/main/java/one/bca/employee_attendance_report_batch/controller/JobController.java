@@ -1,5 +1,6 @@
 package one.bca.employee_attendance_report_batch.controller;
 
+import lombok.RequiredArgsConstructor;
 import one.bca.employee_attendance_report_batch.configuration.JobConfiguration;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -8,15 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class JobController {
-
     private final JobLauncher jobLauncher;
     private final JobConfiguration jobConfiguration;
-
-    public JobController(JobLauncher jobLauncher, JobConfiguration jobConfiguration) {
-        this.jobLauncher = jobLauncher;
-        this.jobConfiguration = jobConfiguration;
-    }
 
     @GetMapping("/start-job")
     public String startJob() {

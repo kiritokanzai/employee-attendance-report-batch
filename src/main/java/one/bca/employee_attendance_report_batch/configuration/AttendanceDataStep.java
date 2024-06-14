@@ -1,5 +1,6 @@
 package one.bca.employee_attendance_report_batch.configuration;
 
+import lombok.RequiredArgsConstructor;
 import one.bca.employee_attendance_report_batch.model.Attendance;
 import one.bca.employee_attendance_report_batch.reader.AttendanceReader;
 import one.bca.employee_attendance_report_batch.writer.AttendanceDataJdbcWriter;
@@ -10,16 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
+@RequiredArgsConstructor
 public class AttendanceDataStep {
     private final JobRepository jobRepository;
     private final DataSourceTransactionManager transactionManager;
     private final AttendanceReader reader;
-
-    public AttendanceDataStep(JobRepository jobRepository, DataSourceTransactionManager transactionManager, AttendanceReader reader) {
-        this.jobRepository = jobRepository;
-        this.transactionManager = transactionManager;
-        this.reader = reader;
-    }
 
     public Step getStep() {
         return new StepBuilder("attendanceDataStep", jobRepository)

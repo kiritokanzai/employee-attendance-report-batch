@@ -91,7 +91,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
                     .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.PAID_LEAVE)
                     .count();
 
-            int paidLeaveLimitRemaining = employee.getPaidLeaveLimit() - employee.getLastUsedPaidLeave() - totalPaidLeaveDays;
+            int paidLeaveLimitRemaining = employee.getPaidLeaveLimit() - employee.getUsedPaidLeave() - totalPaidLeaveDays;
 
             reportList.add(new EmployeeAttendanceReportDto(
                     employee.getEmployeeId(),

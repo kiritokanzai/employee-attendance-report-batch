@@ -9,8 +9,7 @@ public class Employee {
     private String category;
     private String division;
     private int paidLeaveLimit;
-    private int lastUsedPaidLeave;
-    private int currentUsedPaidLeave;
+    private int usedPaidLeave;
 
     public String getEmployeeId() {
         return employeeId;
@@ -76,20 +75,12 @@ public class Employee {
         this.paidLeaveLimit = paidLeaveLimit;
     }
 
-    public int getLastUsedPaidLeave() {
-        return lastUsedPaidLeave;
+    public int getUsedPaidLeave() {
+        return usedPaidLeave;
     }
 
-    public void setLastUsedPaidLeave(int lastUsedPaidLeave) {
-        this.lastUsedPaidLeave = lastUsedPaidLeave;
-    }
-
-    public int getCurrentUsedPaidLeave() {
-        return currentUsedPaidLeave;
-    }
-
-    public void setCurrentUsedPaidLeave(int currentUsedPaidLeave) {
-        this.currentUsedPaidLeave = currentUsedPaidLeave;
+    public void setUsedPaidLeave(int usedPaidLeave) {
+        this.usedPaidLeave = usedPaidLeave;
     }
 
     @Override
@@ -103,8 +94,7 @@ public class Employee {
                 ", category=" + category +
                 ", division=" + division +
                 ", paidLeaveLimit=" + paidLeaveLimit +
-                ", lastUsedPaidLeave=" + lastUsedPaidLeave +
-                ", currentUsedPaidLeave=" + currentUsedPaidLeave +
+                ", usedPaidLeave=" + usedPaidLeave +
                 ']';
     }
 }

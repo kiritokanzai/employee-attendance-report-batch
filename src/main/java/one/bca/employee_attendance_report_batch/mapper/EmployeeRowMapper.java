@@ -17,8 +17,7 @@ public class EmployeeRowMapper implements RowMapper<Employee> {
         employee.setEmail(rs.getString("email"));
         employee.setCategory(rs.getString("category"));
         employee.setPaidLeaveLimit(rs.getInt("paid_leave_limit"));
-        employee.setLastUsedPaidLeave(rs.getInt("last_used_paid_leave"));
-        employee.setCurrentUsedPaidLeave(rs.getInt("current_used_paid_leave"));
+        employee.setUsedPaidLeave(rs.getInt("used_paid_leave"));
 
         return employee;
     }

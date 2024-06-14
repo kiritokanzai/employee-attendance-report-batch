@@ -1,5 +1,6 @@
 package one.bca.employee_attendance_report_batch.processor;
 
+import lombok.extern.slf4j.Slf4j;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceDataDto;
 import one.bca.employee_attendance_report_batch.mapper.AttendanceRowMapper;
 import one.bca.employee_attendance_report_batch.model.Attendance;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 @Configuration
+@Slf4j
 public class EmployeeAttendanceProcessor implements ItemProcessor<Employee, EmployeeAttendanceDataDto> {
     private final JdbcTemplate jdbcTemplate;
 
@@ -25,7 +27,9 @@ public class EmployeeAttendanceProcessor implements ItemProcessor<Employee, Empl
             "order by ea.date asc";
 
     @Override
-    public EmployeeAttendanceDataDto process(Employee item) throws Exception {
+    public EmployeeAttendanceDataDto process(Employee item) {
+        log.info("Processing employee: {}", item.getEmployeeId());
+
         List<Attendance> attendanceList = jdbcTemplate.query(GET_ATTENDANCE_SQL, new AttendanceRowMapper(), item.getEmployeeId());
 
         return new EmployeeAttendanceDataDto(item, attendanceList);

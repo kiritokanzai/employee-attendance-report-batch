@@ -113,7 +113,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
     }
 
     private void writeReportCsv(List<EmployeeAttendanceReportDto> data) throws IOException {
-        File file = new FileSystemResource("report/employee_attendance_monthly_report.csv").getFile();
+        File file = new FileSystemResource("employee_attendance_monthly_report.csv").getFile();
         boolean isNewFile = file.createNewFile();
         try {
             FileWriter outputfile = new FileWriter(file, true);
@@ -142,7 +142,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
     public void batchUpdatePaidLeaveData(List<EmployeeAttendanceReportDto> dataList) throws Exception {
         try {
             jdbcTemplate.batchUpdate(
-                    "update EMPLOYEE_DATA set last_used_paid_leave = ? where employee_id = ?",
+                    "update EMPLOYEE_DATA set used_paid_leave = ? where employee_id = ?",
                     new BatchPreparedStatementSetter() {
                         public void setValues(PreparedStatement ps, int i) throws SQLException {
                             EmployeeAttendanceReportDto data = dataList.get(i);

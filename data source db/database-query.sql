@@ -14,7 +14,7 @@ create table employee_data (
 	category varchar(10) null,
 	division varchar(50) null,
 	paid_leave_limit int not null,
-	used_paid_leave int not null,
+	used_paid_leave int not null
 );
 
 --drop table employee_attendance

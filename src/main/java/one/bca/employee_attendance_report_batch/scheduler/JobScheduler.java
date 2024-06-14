@@ -18,7 +18,7 @@ public class JobScheduler {
     private final Job job;
     private final JobLauncher jobLauncher;
 
-    @Scheduled(cron = "0 0 1 * *") // Schedule at first day of the month
+    @Scheduled(cron = "0 0 0 1 * *") // Schedule at first day of the month
     public void performBatchJob() throws Exception {
         log.info("Running job {} on {}", job.getName(), LocalDateTime.now());
         JobParameters params = new JobParametersBuilder()

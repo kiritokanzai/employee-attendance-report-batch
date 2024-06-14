@@ -2,32 +2,22 @@ package one.bca.employee_attendance_report_batch.writer;
 
 import com.opencsv.CSVWriter;
 import one.bca.employee_attendance_report_batch.AppConfigurationProperties;
-import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceDataDto;
 import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
-import one.bca.employee_attendance_report_batch.enumHelper.AttendanceStatusEnum;
-import one.bca.employee_attendance_report_batch.model.Attendance;
-import one.bca.employee_attendance_report_batch.model.Employee;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Time;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 @Configuration
-public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendanceDataDto> {
+public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendanceReportDto> {
     private final JdbcTemplate jdbcTemplate;
     private final AppConfigurationProperties configuration;
 
@@ -53,66 +43,12 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
     };
 
     @Override
-    public void write(Chunk<? extends EmployeeAttendanceDataDto> chunk) throws Exception {
-        /*
-            Step:
-            1. calculate
-            2. write report to csv (format: EmployeeAttendanceReportDto)
-            3. update past and current leave in employee table
-         */
-
-        List<EmployeeAttendanceReportDto> reportList = new ArrayList<>();
-
-        chunk.forEach(item -> {
-            Employee employee = item.getEmployee();
-            List<Attendance> attendanceList = item.getAttendanceList();
-
-            int totalAttendDays = (int) attendanceList
-                    .stream()
-                    .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockIn().before(configuration.getAttendanceClockIn()) && x.getClockOut().after(configuration.getAttendanceClockOut()))
-                    .count();
-
-            int totalLateDays = (int) attendanceList
-                    .stream()
-                    .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockIn().after(configuration.getAttendanceClockIn()))
-                    .count();
-
-            AtomicInteger totalOvertimeHours = new AtomicInteger();
-
-            attendanceList
-                    .stream()
-                    .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.WORK && x.getClockOut().after(configuration.getStartOvertimeHour()))
-                    .forEach(x ->
-                            totalOvertimeHours.addAndGet((int) Duration.between(x.getClockOut().toLocalTime(), Time.valueOf("23:59:59").toLocalTime()).toHours())
-                    );
-
-            int totalPaidLeaveDays = (int) attendanceList
-                    .stream()
-                    .filter(x -> x.getAttendanceStatus() == AttendanceStatusEnum.PAID_LEAVE)
-                    .count();
-
-            int paidLeaveLimitRemaining = employee.getPaidLeaveLimit() - employee.getUsedPaidLeave() - totalPaidLeaveDays;
-
-            reportList.add(new EmployeeAttendanceReportDto(
-                    employee.getEmployeeId(),
-                    employee.getFirstName(),
-                    employee.getLastName(),
-                    employee.getCategory(),
-                    employee.getCategory(),
-                    employee.getDivision(),
-                    totalAttendDays,
-                    totalLateDays,
-                    totalOvertimeHours.get(),
-                    totalPaidLeaveDays,
-                    paidLeaveLimitRemaining
-            ));
-        });
-
-        batchUpdatePaidLeaveData(reportList);
-        writeReportCsv(reportList);
+    public void write(Chunk<? extends EmployeeAttendanceReportDto> chunk) throws Exception {
+        batchUpdatePaidLeaveData(chunk);
+        writeReportCsv(chunk);
     }
 
-    private void writeReportCsv(List<EmployeeAttendanceReportDto> data) throws IOException {
+    private void writeReportCsv(Chunk<? extends EmployeeAttendanceReportDto> data) throws IOException {
         File file = new FileSystemResource("employee_attendance_monthly_report.csv").getFile();
         boolean isNewFile = file.createNewFile();
         try {
@@ -139,21 +75,17 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
         }
     }
 
-    public void batchUpdatePaidLeaveData(List<EmployeeAttendanceReportDto> dataList) throws Exception {
+    public void batchUpdatePaidLeaveData(Chunk<? extends EmployeeAttendanceReportDto> dataList) throws Exception {
         try {
-            jdbcTemplate.batchUpdate(
-                    "update EMPLOYEE_DATA set used_paid_leave = ? where employee_id = ?",
-                    new BatchPreparedStatementSetter() {
-                        public void setValues(PreparedStatement ps, int i) throws SQLException {
-                            EmployeeAttendanceReportDto data = dataList.get(i);
-                            ps.setInt(1, data.getPaid_leave_limit_remaining());
-                            ps.setString(2, data.getEmployeeId());
+            dataList.forEach((report) -> {
+                jdbcTemplate.update(
+                        "update EMPLOYEE_DATA set used_paid_leave = ? where employee_id = ?",
+                        ps -> {
+                            ps.setInt(1, report.getPaid_leave_limit_remaining());
+                            ps.setString(2, report.getEmployeeId());
                         }
-
-                        public int getBatchSize() {
-                            return dataList.size();
-                        }
-                    });
+                );
+            });
 
 
             logger.info("Successfully updating data to database");

@@ -37,7 +37,7 @@ public class EmployeeReader {
     private SqlPagingQueryProviderFactoryBean getSqlPagingQueryProviderFactoryBean() {
         final SqlPagingQueryProviderFactoryBean sqlPagingQueryProviderFactoryBean = new SqlPagingQueryProviderFactoryBean();
         sqlPagingQueryProviderFactoryBean.setDataSource(transactionManager.getDataSource());
-        sqlPagingQueryProviderFactoryBean.setSelectClause("select employee_id, first_name, last_name, gender, email, category, paid_leave_limit, used_paid_leave");
+        sqlPagingQueryProviderFactoryBean.setSelectClause("select employee_id, first_name, last_name, gender, email, category, division, paid_leave_limit, used_paid_leave");
         sqlPagingQueryProviderFactoryBean.setFromClause("from employee_data");
         sqlPagingQueryProviderFactoryBean.setSortKey("employee_id");
         return sqlPagingQueryProviderFactoryBean;

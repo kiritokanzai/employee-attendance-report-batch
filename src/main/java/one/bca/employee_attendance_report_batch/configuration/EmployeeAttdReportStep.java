@@ -1,7 +1,7 @@
 package one.bca.employee_attendance_report_batch.configuration;
 
 import lombok.RequiredArgsConstructor;
-import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceDataDto;
+import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
 import one.bca.employee_attendance_report_batch.model.Employee;
 import one.bca.employee_attendance_report_batch.processor.EmployeeAttendanceProcessor;
 import one.bca.employee_attendance_report_batch.writer.EmployeeAttdReportFileWriter;
@@ -29,7 +29,7 @@ public class EmployeeAttdReportStep {
 
     public Step getStep() {
         return new StepBuilder("employeeDataStep", jobRepository)
-                .<Employee, EmployeeAttendanceDataDto>chunk(50, transactionManager)
+                .<Employee, EmployeeAttendanceReportDto>chunk(50, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)

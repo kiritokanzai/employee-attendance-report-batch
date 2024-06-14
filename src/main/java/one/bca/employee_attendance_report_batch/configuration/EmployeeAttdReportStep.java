@@ -5,6 +5,7 @@ import one.bca.employee_attendance_report_batch.dto.EmployeeAttendanceReportDto;
 import one.bca.employee_attendance_report_batch.model.Employee;
 import one.bca.employee_attendance_report_batch.processor.EmployeeAttendanceProcessor;
 import one.bca.employee_attendance_report_batch.writer.EmployeeAttdReportFileWriter;
+import org.apache.coyote.BadRequestException;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -33,6 +34,9 @@ public class EmployeeAttdReportStep {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
+                .faultTolerant()
+                .retryLimit(20)
+                .retry(BadRequestException.class)
                 .taskExecutor(taskExecutor())
                 .build();
     }

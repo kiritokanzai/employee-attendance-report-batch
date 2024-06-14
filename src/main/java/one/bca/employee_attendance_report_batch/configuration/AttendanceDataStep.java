@@ -8,8 +8,6 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 @Configuration
@@ -18,17 +16,16 @@ public class AttendanceDataStep {
     private final JobRepository jobRepository;
     private final DataSourceTransactionManager transactionManager;
     private final AttendanceReader reader;
-
-    public TaskExecutor taskExecutor() {
-        return new SimpleAsyncTaskExecutor("attendance-data-task");
-    }
+    private final AttendanceDataJdbcWriter writer;
 
     public Step getStep() {
         return new StepBuilder("attendanceDataStep", jobRepository)
                 .<Attendance, Attendance>chunk(50, transactionManager)
                 .reader(reader.itemReader())
-                .writer(new AttendanceDataJdbcWriter().itemWriter(transactionManager.getDataSource()))
-                .taskExecutor(taskExecutor())
+                .writer(writer.itemWriter(transactionManager.getDataSource()))
+                .faultTolerant()
+                .retryLimit(20)
+                .retry(Exception.class)
                 .build();
     }
 }

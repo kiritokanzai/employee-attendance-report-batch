@@ -32,13 +32,6 @@ public class EmployeeAttendanceProcessor implements ItemProcessor<Employee, Empl
 
     @Override
     public EmployeeAttendanceReportDto process(Employee employee) {
-        /*
-            Step:
-            1. calculate
-            2. write report to csv (format: EmployeeAttendanceReportDto)
-            3. update past and current leave in employee table
-         */
-
         log.info("Processing employee: {}", employee.getEmployeeId());
 
         List<Attendance> attendanceList = jdbcTemplate.query(GET_ATTENDANCE_SQL, new AttendanceRowMapper(), employee.getEmployeeId());

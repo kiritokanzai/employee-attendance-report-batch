@@ -29,6 +29,7 @@ public class EmployeeReader {
         reader.setDataSource(transactionManager.getDataSource());
         reader.setPageSize(50);
         reader.setRowMapper(new EmployeeRowMapper());
+        reader.setSaveState(false);
         return reader;
     }
 

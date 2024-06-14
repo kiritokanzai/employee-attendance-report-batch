@@ -33,6 +33,7 @@ public class AttendanceReader {
         lineMapper.setFieldSetMapper(new AttendanceFieldMapper());
 
         itemReader.setLineMapper(lineMapper);
+        itemReader.setSaveState(false);
         return itemReader;
     }
 }

@@ -44,7 +44,7 @@ public class EmployeeAttdReportFileWriter implements ItemWriter<EmployeeAttendan
     }
 
     private synchronized void writeReportCsv(Chunk<? extends EmployeeAttendanceReportDto> data) throws IOException {
-        File file = new FileSystemResource("employee_attendance_monthly_report.csv").getFile();
+        File file = new FileSystemResource("report/employee_attendance_monthly_report.csv").getFile();
         boolean isNewFile = file.createNewFile();
         try {
             FileWriter outputfile = new FileWriter(file, true);
